@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Rubik:wght@300&display=swap');
+
+* {
+  font-family: "Arimo", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  box-sizing: 0px;
+  margin: 0px;
+  ---btn-color-blue: #2F4BFF;
+  ---btn-color-red: #F23D3F;
+  ---btn-color-green: #75ac60;
+  ---btn-color-dor: #CF8F59;
+  ---btn--select-blue: #2135b6;
+  ---btn--select-red: #c23032;
+  ---btn-select-green: #517742;
+  ---btn-select-dor: #94653f;
+}
+
+
+section {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  height: 300vh;
+}
+
+section h1 {
+  margin-top: 20px;
+}
+
+h1, h2, h3 {
+  color: #575757;
+}
+
+
+table {
+  margin-top: 20px;
+  margin-left: 100px;
+}
+
+table, th, td {
+  border: 0;
+  border-collapse: collapse;
+  
+  padding: 20px;
+}
+
+th {
+  text-align: center;
+  
+  background-color: #e4e4e4;
+  color: #575757;
+  text-transform: uppercase;
+}
+
+
+td:last-child {
+  align-items: center;
+  justify-content: center;
+}
+
+td {
+  max-width: 125px;
+  overflow-x: auto;
+}
+
+td:last-child .btn-del {
+  background-color: var(---btn-color-red);
+}
+
+td:last-child .btn-del:hover {
+  background-color: var(---btn--select-red);
+}
+
+td:last-child .btn-edit {
+  background-color: var(---btn-color-blue);
+  margin-left: 2px;
+}
+
+td:last-child .btn-edit:hover {
+  background-color: var(---btn--select-blue);
+}
+
+td:last-child button {
+  border: 0px;
+  border-radius: 3px;
+  padding: 10px;
+  color: white;
+}
+
+tr:nth-child(2) {
+  background-color: #ecebeb;
+}
+
+
+.div-CV {
+  position: fixed;
+  display: flex;
+  top: 5px;
+  left: 120px;
+  gap: 5px;
+}
+
+.div-CV button {
+  padding: 7px;
+  border: 0px;
+  color: white;
+  border-radius: 3px;
+}
+
+.btn-get {
+  background-color: var(---btn-color-green);
+}
+
+.btn-get:hover {
+  background-color: var(---btn-select-green);
+}
+
+.btn-create {
+  background-color: var(---btn-color-dor);
+}
+
+.btn-create:hover{
+  background-color: var(---btn-select-dor);
+}

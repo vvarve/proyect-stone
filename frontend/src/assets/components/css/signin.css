@@ -1,0 +1,59 @@
+.div-signin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+    ---background-color: #424378;
+    ---color-letter: #FAFAFA;
+    ---select-background:rgb(78, 78, 114);
+    ---other-background: #35394b;
+    ---other-select-background: #2F4BFF;
+    ---other-color-letter: #575757;
+}
+
+.div-signin div {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+h2 {
+    text-align: left;
+    color: var(---other-color-letter);
+}
+
+.btn-signin {
+    color: white;
+    background-color: var(---other-background);
+    border: 0px;
+    padding: 7px;
+    width: 100%;
+}
+
+.div-signin form {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+form label {
+    text-transform: uppercase;
+}
+
+form input {
+    font-size: 18px;
+    border: 0px;
+    outline: none;
+    padding: 7px;
+    border-radius: 4px;
+    background-color: #e4e4e4;
+    /* border-bottom: 5px solid var(---other-background) */
+}
+/* 
+form input:where(:focus) {
+    border: 4px solid var(---other-background);
+} */
+
