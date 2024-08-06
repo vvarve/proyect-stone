@@ -20,6 +20,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view, permission_classes
 
 load_dotenv()
 
@@ -231,14 +232,16 @@ class ModuleViewSpecificAdmin(APIView):
                 data = {"success": "Module Modified!"}
                 return data
             return data_serializer.errors
-    
-    @deleteInformation
-    def delete(self, request, id):
+
+@deleteInformation
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+def delete_view(self, request, id):
         if id > 0:
             delete_user = ModuleModel.objects.filter(id = id).first()
             deleted_error = {"message": "error"}
             if delete_user:
-                delete_user.delete = True
+                delete_user.delete()
                 deleted = {"success" : "complete!"}
                 return deleted
             return deleted_error

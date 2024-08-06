@@ -6,7 +6,8 @@ from erp.views import (AgentsViewAdmin,
                        UserViewSpecificAdmin,
                        AgentViewSpecificAdmin,
                        ModuleViewSpecificAdmin,
-                       TokenPeronalizedView)
+                       TokenPeronalizedView,
+                       delete_view)
 
 urlpatterns = [
 
@@ -27,5 +28,5 @@ urlpatterns = [
 
     #M------- > MODULES
     path("modules", ModuleViewsAdmin.as_view(), name="AllModules"),
-    path("modules/<int:id>", ModuleViewSpecificAdmin.as_view(), name="SpecificModules"),
+    path("modules/<int:id>/", delete_view, name="SpecificModules"),
 ]

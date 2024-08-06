@@ -1,6 +1,6 @@
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
-from erp.models import AgentModel, ModuleModel
+from erp.models import AgentModel, ModuleModel, CodeFree
 from django.contrib.auth.models import User
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer): #Change the information Json WEB Token
@@ -62,4 +62,10 @@ class PrincipalAgentSerializer(serializers.ModelSerializer):
 class PrincipalModuleSerializer(serializers.ModelSerializer):
     class Meta:
         model = ModuleModel
+        fields = "__all__"
+
+
+class PrincipalCodeSerializer(serializers.ModelField):
+    class Meta:
+        Model = CodeFree
         fields = "__all__"
