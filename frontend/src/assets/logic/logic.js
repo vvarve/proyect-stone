@@ -16,21 +16,56 @@ export const getModule = (key) => axios.get("http://127.0.0.1:8000/in/modules", 
 
 export const getUser = (key) => axios.get("http://127.0.0.1:8000/in/ua", {headers: {Authorization: 'Bearer ' + key, 'Content-Type': 'application/json' }})
 
+// post Users
 
-// get info specific for editing
-// export const getOneUser = (id) => axios.get()
+export const postUser = async (data) =>  {
+    await axios.post("http://127.0.0.1:8000/in/ua", 
+    {email: data.email, 
+    is_active: data.is_active, 
+    is_staff: data.is_staff, 
+    is_superuser: data.is_superuser, 
+    password: data.password, 
+    username: data.username
+    }, 
+    {headers: {
+    'Authorization': 'Bearer ' + localStorage.getItem("access"), 
+    'Content-Type': 'application/json' }}
+)}
 
-// export const getOneAgent = (id) => {}
 
-// export const getOneUser = (id) => {}
+export const postModule = async (data) =>  {
+    await axios.post("http://127.0.0.1:8000/in/modules", 
+    {module: data.module,
+    get: data.get,
+    put: data.put,
+    post: data.post,
+    delete: data.delete
+    }, 
+    {headers: {
+    'Authorization': 'Bearer ' + localStorage.getItem("access"), 
+    'Content-Type': 'application/json' }}
+)}
+
+
+export const postAgents = async (data) =>  {
+    await axios.post("http://127.0.0.1:8000/in/agents", 
+    {agent: data.agent,
+    group: data.group,
+    dni: data.dni,
+    address: data.address,
+    }, 
+    {headers: {
+    'Authorization': 'Bearer ' + localStorage.getItem("access"), 
+    'Content-Type': 'application/json' }}
+)}
 
 
 // Del specific 
-export const delModule = (id) => axios.delete(`http://127.0.0.1:8000/in/modules/${id}`,{headers: {Authorization: 'Bearer ' + localStorage.getItem("access"), 'Content-Type': 'application/json' }})
+export const delModule = (id) => axios.delete(`http://127.0.0.1:8000/in/modules/${id}`,{headers: {"Authorization": 'Bearer ' + localStorage.getItem("access"), 'Content-Type': 'application/json' }})
 
-export const delUser = (id) => axios.delete(`http://127.0.0.1:8000/in/ua/${id}`,{headers: {Authorization: 'Bearer ' + localStorage.getItem("access"), 'Content-Type': 'application/json' }})
+export const delUser = (id) => axios.delete(`http://127.0.0.1:8000/in/ua/${id}`,{headers: {"Authorization": 'Bearer ' + localStorage.getItem("access"), 'Content-Type': 'application/json' }})
 
-export const delAgent = (id) => axios.delete(`http://127.0.0.1:8000/in/agents${id}`,{headers: {Authorization: 'Bearer ' + localStorage.getItem("access"), 'Content-Type': 'application/json' }})
+export const delAgent = (id) => axios.delete(`http://127.0.0.1:8000/in/agents${id}`,{headers: {"Authorization": 'Bearer ' + localStorage.getItem("access"), 'Content-Type': 'application/json' }})
 
 
 // Put specific

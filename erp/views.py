@@ -31,16 +31,18 @@ def getInformation(func_ext):
     def func_intern(self, request):
         if request.META.get('HTTP_AUTHORIZATION').split(" ")[0] == "Bearer" and request.META.get('HTTP_AUTHORIZATION').split(" ")[1]:
             payload = jwt.decode(request.META.get('HTTP_AUTHORIZATION').split(" ")[1], key= os.getenv('SECRET_KEY'), algorithms=["HS256"])
-            ip = request.META.get('REMOTE_ADDR') if not request.META.get('HTTP_X_FORWARDED_FOR') else request.META.get('HTTP_X_FORWARDED_FOR')
-            userip = AgentModel.objects.filter(id = payload["user_id"]).first()
-            group = ModuleModel.objects.get(module = payload["group"])
-            if group.get or payload["staff"] or payload["superuser"] or payload["active"]:
-                return_function = func_ext(self, request)
-                if return_function:
-                    userip.current_ip = ip
-                    userip.save()
-                    return RES(return_function, status= status.HTTP_200_OK)
-                return RES({"message": "Bad data request"}, status= status.HTTP_400_BAD_REQUEST)
+            if payload["active"]:
+                ip = request.META.get('REMOTE_ADDR') if not request.META.get('HTTP_X_FORWARDED_FOR') else request.META.get('HTTP_X_FORWARDED_FOR')
+                userip = AgentModel.objects.filter(id = payload["user_id"]).first()
+                group = ModuleModel.objects.get(module = payload["group"])
+                if group.get or payload["staff"] or payload["superuser"] or payload["active"]:
+                    return_function = func_ext(self, request)
+                    if return_function:
+                        userip.current_ip = ip
+                        userip.save()
+                        return RES(return_function, status= status.HTTP_200_OK)
+                    return RES({"message": "Bad data request"}, status= status.HTTP_400_BAD_REQUEST)
+                return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
             return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
         return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
     return func_intern
@@ -50,16 +52,18 @@ def postInformation(func_ext):
     def func_intern(self, request):
         if request.META.get('HTTP_AUTHORIZATION').split(" ")[0] == "Bearer" and request.META.get('HTTP_AUTHORIZATION').split(" ")[1]:
             payload = jwt.decode(request.META.get('HTTP_AUTHORIZATION').split(" ")[1], key= os.getenv('SECRET_KEY'), algorithms=["HS256"])
-            ip = request.META.get('REMOTE_ADDR') if not request.META.get('HTTP_X_FORWARDED_FOR') else request.META.get('HTTP_X_FORWARDED_FOR')
-            userip = AgentModel.objects.filter(id = payload["user_id"]).first()
-            group = ModuleModel.objects.get(module = payload["group"])
-            if group.post and payload["staff"] or payload["superuser"]:
-                return_function = func_ext(self, request)
-                if return_function["success"]:
-                    userip.current_ip = ip
-                    userip.save()
-                    return RES(return_function, status= status.HTTP_200_OK)
-                return RES(return_function, status= status.HTTP_400_BAD_REQUEST)
+            if payload["active"]:
+                ip = request.META.get('REMOTE_ADDR') if not request.META.get('HTTP_X_FORWARDED_FOR') else request.META.get('HTTP_X_FORWARDED_FOR')
+                userip = AgentModel.objects.filter(id = payload["user_id"]).first()
+                group = ModuleModel.objects.get(module = payload["group"])
+                if group.post and payload["staff"] or payload["superuser"]:
+                    return_function = func_ext(self, request)
+                    if return_function["success"]:
+                        userip.current_ip = ip
+                        userip.save()
+                        return RES(return_function, status= status.HTTP_200_OK)
+                    return RES(return_function, status= status.HTTP_400_BAD_REQUEST)
+                return RES({"post": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
             return RES({"post": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
         return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
     return func_intern
@@ -69,16 +73,18 @@ def putInformation(func_ext):
     def func_intern(self, request, id):
         if request.META.get('HTTP_AUTHORIZATION').split(" ")[0] == "Bearer" and request.META.get('HTTP_AUTHORIZATION').split(" ")[1]:
             payload = jwt.decode(request.META.get('HTTP_AUTHORIZATION').split(" ")[1], key= os.getenv('SECRET_KEY'), algorithms=["HS256"])
-            ip = request.META.get('REMOTE_ADDR') if not request.META.get('HTTP_X_FORWARDED_FOR') else request.META.get('HTTP_X_FORWARDED_FOR')
-            userip = AgentModel.objects.filter(id = payload["user_id"]).first()
-            group = ModuleModel.objects.get(module = payload["group"])
-            if group.put and payload["staff"] or payload["superuser"]:
-                return_function = func_ext(self, request, id)
-                if return_function["success"]:
-                    userip.current_ip = ip
-                    userip.save()
-                    return RES(return_function, status= status.HTTP_200_OK)
-                return RES(return_function, status= status.HTTP_400_BAD_REQUEST)
+            if payload["active"]:
+                ip = request.META.get('REMOTE_ADDR') if not request.META.get('HTTP_X_FORWARDED_FOR') else request.META.get('HTTP_X_FORWARDED_FOR')
+                userip = AgentModel.objects.filter(id = payload["user_id"]).first()
+                group = ModuleModel.objects.get(module = payload["group"])
+                if group.put and payload["staff"] or payload["superuser"]:
+                    return_function = func_ext(self, request, id)
+                    if return_function["success"]:
+                        userip.current_ip = ip
+                        userip.save()
+                        return RES(return_function, status= status.HTTP_200_OK)
+                    return RES(return_function, status= status.HTTP_400_BAD_REQUEST)
+                return RES({"put": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
             return RES({"put": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
         return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
     return func_intern
@@ -87,16 +93,19 @@ def deleteInformation(func_ext):
     def func_intern(self, request, id):
         if request.META.get('HTTP_AUTHORIZATION').split(" ")[0] == "Bearer" and request.META.get('HTTP_AUTHORIZATION').split(" ")[1]:
             payload = jwt.decode(request.META.get('HTTP_AUTHORIZATION').split(" ")[1], key= os.getenv('SECRET_KEY'), algorithms=["HS256"])
-            ip = request.META.get('REMOTE_ADDR') if not request.META.get('HTTP_X_FORWARDED_FOR') else request.META.get('HTTP_X_FORWARDED_FOR')
-            userip = AgentModel.objects.filter(id = payload["user_id"]).first()
-            group = ModuleModel.objects.get(module = payload["group"])
-            if group.delete and payload["staff"] or payload["superuser"]:
-                return_function = func_ext(self, request, id)
-                if return_function["success"]:
-                    userip.current_ip = ip
-                    userip.save()
-                    return RES(return_function, status= status.HTTP_200_OK)
-                return RES(return_function, status= status.HTTP_400_BAD_REQUEST)
+            if payload["active"]:
+                ip = request.META.get('REMOTE_ADDR') if not request.META.get('HTTP_X_FORWARDED_FOR') else request.META.get('HTTP_X_FORWARDED_FOR')
+                userip = AgentModel.objects.filter(id = payload["user_id"]).first()
+                group = ModuleModel.objects.get(module = payload["group"])
+                if group.delete and payload["staff"] or payload["superuser"]:
+                    return_function = func_ext(self, request, id)
+                    
+                    if return_function["success"]:
+                        userip.current_ip = ip
+                        userip.save()
+                        return RES(return_function, status= status.HTTP_200_OK)
+                    return RES(return_function, status= status.HTTP_400_BAD_REQUEST)
+                return RES({"delete": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
             return RES({"delete": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
         return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
     return func_intern
@@ -104,18 +113,21 @@ def deleteInformation(func_ext):
 
 def getInformationId(func_ext):
     def func_intern(self, request, id):
+        print(request.META.get('HTTP_AUTHORIZATION'))
         if request.META.get('HTTP_AUTHORIZATION').split(" ")[0] == "Bearer" and request.META.get('HTTP_AUTHORIZATION').split(" ")[1]:
             payload = jwt.decode(request.META.get('HTTP_AUTHORIZATION').split(" ")[1], key= os.getenv('SECRET_KEY'), algorithms=["HS256"])
-            ip = request.META.get('REMOTE_ADDR') if not request.META.get('HTTP_X_FORWARDED_FOR') else request.META.get('HTTP_X_FORWARDED_FOR')
-            userip = AgentModel.objects.filter(id = payload["user_id"]).first()
-            group = ModuleModel.objects.get(module = payload["group"])
-            if group.get or payload["staff"] or payload["superuser"] or payload["active"]:
-                return_function = func_ext(self, request, id)
-                if return_function["success"]:
-                    userip.current_ip = ip
-                    userip.save()
-                    return RES(return_function, status= status.HTTP_200_OK)
-                return RES(return_function, status= status.HTTP_400_BAD_REQUEST)
+            if payload["active"]:
+                ip = request.META.get('REMOTE_ADDR') if not request.META.get('HTTP_X_FORWARDED_FOR') else request.META.get('HTTP_X_FORWARDED_FOR')
+                userip = AgentModel.objects.filter(id = payload["user_id"]).first()
+                group = ModuleModel.objects.get(module = payload["group"])
+                if group.get or payload["staff"] or payload["superuser"] or payload["active"]:
+                    return_function = func_ext(self, request, id)
+                    if return_function["success"]:
+                        userip.current_ip = ip
+                        userip.save()
+                        return RES(return_function, status= status.HTTP_200_OK)
+                    return RES(return_function, status= status.HTTP_400_BAD_REQUEST)
+                return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
             return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
         return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
     return func_intern
@@ -127,7 +139,7 @@ class TokenPeronalizedView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 class UserViewsAdmin(APIView):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
 
     @getInformation
     def get(self, request):
@@ -220,17 +232,16 @@ class ModuleViewSpecificAdmin(APIView):
                 return data
             return data_serializer.errors
     
-
     @deleteInformation
     def delete(self, request, id):
         if id > 0:
             delete_user = ModuleModel.objects.filter(id = id).first()
-            delete = {"message": "error"}
+            deleted_error = {"message": "error"}
             if delete_user:
-                delete_user.delete()
-                delete = {"success": "Agent deleted!"}
-                return delete
-            return delete
+                delete_user.delete = True
+                deleted = {"success" : "complete!"}
+                return deleted
+            return deleted_error
            
 class AgentsViewAdmin(APIView):
     permission_classes = (IsAuthenticated,)

@@ -19,6 +19,6 @@ from django.urls import path, include
 from erp import urls
 
 urlpatterns = [
-    path('aaa/', admin.site.urls),
+    path('a/', admin.site.urls),
     path("in/", include(urls))
 ]

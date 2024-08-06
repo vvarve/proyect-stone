@@ -1,4 +1,4 @@
-import {BrowserRouter, Routes, Route} from "react-router-dom"
+import {Routes, Route} from "react-router-dom"
 import './App.css'
 import { Navigator } from "./assets/components/Navigator"
 import { Home } from "./assets/components/home"
@@ -13,7 +13,6 @@ function App() {
   return (
     <>
     <PropsContext>
-      <BrowserRouter>
           <Navigator/>
           <Routes>
               <Route path="/" element={<Home/>}></Route>
@@ -22,7 +21,6 @@ function App() {
               <Route path="/user" element={<User/>}></Route>
               <Route path="/signin" element={<Sigin/>}></Route>
           </Routes>
-      </BrowserRouter>
      </PropsContext> 
     </>
   )

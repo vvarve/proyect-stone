@@ -24,22 +24,32 @@ h2 {
 }
 
 .btn-signin {
-    color: white;
-    background-color: var(---other-background);
-    border: 0px;
+    color: #999797;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 16px;
+    background-color: #ebebeb;
+    border: 0.5px solid #ebebeb;
     padding: 7px;
     width: 100%;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 2px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+.btn-signin {
+    cursor: pointer;
 }
 
 .div-signin form {
     display: flex;
-    gap: 5px;
+    gap: 8px;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
 
 form label {
+    font-weight: 500;
+    color: #575757;
     text-transform: uppercase;
 }
 
@@ -48,8 +58,8 @@ form input {
     border: 0px;
     outline: none;
     padding: 7px;
-    border-radius: 4px;
-    background-color: #e4e4e4;
+    box-shadow: 0 2px 1px 0 rgba(255, 255, 255, 0.2), 0 0px 0px 1px rgba(48, 48, 48, 0.19);
+    background-color: #fcfcfc;
     /* border-bottom: 5px solid var(---other-background) */
 }
 /* 

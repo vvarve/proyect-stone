@@ -48,8 +48,9 @@ table, th, td {
 
 th {
   text-align: center;
-  
-  background-color: #e4e4e4;
+  /* background-color: #e4e4e4;
+  border-bottom: 6px solid #575757; */
+  box-shadow: 0 0px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);
   color: #575757;
   text-transform: uppercase;
 }
@@ -89,9 +90,10 @@ td:last-child button {
   color: white;
 }
 
-tr:nth-child(2) {
-  background-color: #ecebeb;
-}
+/* tr:nth-child(even) {
+  background-color: #f0f0f0;
+  border-bottom: 0.1px solid #575757;
+} */
 
 
 .div-CV {
@@ -110,17 +112,139 @@ tr:nth-child(2) {
 }
 
 .btn-get {
-  background-color: var(---btn-color-green);
+  background-color: #050D42;
 }
 
 .btn-get:hover {
-  background-color: var(---btn-select-green);
+  /* background-color: var(---btn-select-dor); */
+  cursor: pointer;
 }
 
 .btn-create {
-  background-color: var(---btn-color-dor);
+  background-color: #2F4BFF;
 }
 
 .btn-create:hover{
-  background-color: var(---btn-select-dor);
+  /* background-color: var(---btn-select-dor); */
+  cursor: pointer;
+}
+
+.class-btns-nodisplay {
+  display: none;
+}
+
+
+
+.modal-create-nodisplay {
+  display:none;
+  pointer-events: none;
+  background: transparent;
+}
+
+.modal-create {
+  pointer-events: all;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top:50px;
+  z-index: 1000;
+  gap: 8px;
+  padding: 20px;
+  background-color: #ffff;
+  border-radius: 20px;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 2px 10px 0 rgba(0, 0, 0, 0.19);
+  
+}
+
+.form-modal-create {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.div-check-box-create-modal {
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+  gap: 7px;
+}
+
+.btn-modal-create {
+    color: #999797;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 16px;
+    background-color: #ebebeb;
+    border: 0.5px solid #ebebeb;
+    padding: 7px;
+    width: 100%;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 2px 10px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+}
+
+.btn-x-create {
+  padding: 6px;
+  background-color: #050D42;
+  color: white;
+  border: 0;
+  border-radius: 3px;
+  transition: padding 1s ease-out;
+  font-size: 18px;
+  font-weight: bolder;
+}
+
+.btn-x-create:hover {
+  padding: 10px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+select {
+  font-size: 18px;
+  border: 0px;
+  outline: none;
+  padding: 7px;
+  box-shadow: 0 2px 1px 0 rgba(255, 255, 255, 0.2), 0 0px 0px 1px rgba(48, 48, 48, 0.19);
+  background-color: #fcfcfc;
+}
+
+
+.modal-delete {
+  pointer-events: all;
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  top:50px;
+  z-index: 1001;
+  gap: 8px;
+  padding: 20px;
+  background-color: #ffff;
+  border-radius: 5px;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 2px 10px 0 rgba(0, 0, 0, 0.19);
+  align-items: center;
+
+    & button {
+      border: 0px;
+      padding: 10px;
+      color: white;
+      border-radius: 5px;
+    }
+
+    & .btn-cancel-modal {
+      background-color: #050D42;
+    }
+    
+    & .btn-cancel-modal:hover {
+      /* background-color: var(---btn-select-dor); */
+      cursor: pointer;
+    }
+    
+    & .btn-delete-modal {
+      background-color: #2F4BFF;
+    }
+    
+    & .btn-delete-modal:hover{
+      /* background-color: var(---btn-select-dor); */
+      cursor: pointer;
+    }
 }
