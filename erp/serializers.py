@@ -7,7 +7,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer): #Change the inform
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-
+        print()
         group = str(AgentModel.objects.filter(agent = user.id).first().group)
         allow = ModuleModel.objects.filter(module = group).first()
         # Add custom claims
