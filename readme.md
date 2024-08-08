@@ -12,7 +12,7 @@
   
     - Contiene un **Secret Key** que se le asigna específicamente para poder asignarle un cambio hacia un nuevo rol como **super usuario**.
     - El módulo asignado lo hace cambiar rápidamente de sus permisos para ***cambiar algo con el ERP***.
-- ***Códigos Libres***: son asignados para cambiar varias percpectivas con el usuario (privilegios y seguridad por eventos) que deberían ser enviados por SMS o E-mail.
+- ***Códigos Libres***: son asignados para cambiar varias percpectivas con el usuario (privilegios y seguridad por eventos).
 - ***Usuarios***: mantiene la estructura principal de los usuarios en conjunto con el modelo ***Agentes***.
 
 Tiene Asignado SimpleJWT y una tabla de lista negra para gestionar los Token que se le son asignados a cada Agente dentro del ERP.
