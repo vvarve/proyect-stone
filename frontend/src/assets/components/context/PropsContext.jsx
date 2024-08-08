@@ -1,6 +1,6 @@
 import { declareAndProvideContext } from "./declaredContext"
 import { useState } from "react"
-import { delModule, getAgent, getModule, getUser, postAgents, postModule, postUser, signIn, signOuten } from "../../logic/logic"
+import { delAgent, delModule, delUser, getAgent, getAngentForId, getModule, getModuleForId, getUser, getUserForId, postAgents, postModule, postUser, putAngent, putModule, putUser, signIn, signOuten } from "../../logic/logic"
 import { jwtDecode } from "jwt-decode"
 import {useNavigate} from "react-router-dom"
 
@@ -9,6 +9,9 @@ import {useNavigate} from "react-router-dom"
 
 export const PropsContext = ({children}) => {
 const navigate = useNavigate()
+const [dataConsultedAgentForId, setDataConsultedAgentForId] = useState([])
+const [dataConsultedUserForId, setDataConsultedUserForId] = useState([])
+const [dataConsultedModulForId, setDataConsultedModulForId] = useState([])
 const [dataConsultedAgents, setDataConsultedAgents] = useState([])
 const [dataConsultedUsers, setDataConsultedUsers] = useState([])
 const [dataConsultedModules, setDataConsultedModules] = useState([])
@@ -128,9 +131,112 @@ const deleteDataModule = async (data) => {
 
 }
 
+const getIdModule = async (data) => {
+    if (localStorage.getItem("access")) {
+         await getModuleForId(data)
+            .then(response => setDataConsultedModulForId([response.data]))
+            .catch(error => setErrorData([...error.message]) & console.log(error))
+        }
+    else {
+        hookForElseAndClearData()
+    }
+
+}
+
+
+const editDataModule = async (data) => {
+    if (localStorage.getItem("access")) {
+         await putModule(data)
+            .then(response => getDataModules())
+            .catch(error => setErrorData([...error.message]))
+        }
+    else {
+        hookForElseAndClearData()
+    }
+
+}
+
+
+const getIdAgent = async (data) => {
+    if (localStorage.getItem("access")) {
+         await getAngentForId(data)
+            .then(response => setDataConsultedAgentForId([response.data]))
+            .catch(error => setErrorData([...error.message]) & console.log(error))
+        }
+    else {
+        hookForElseAndClearData()
+    }
+
+}
+
+
+const deleteDataAgent = async (data) => {
+    if (localStorage.getItem("access")) {
+         await delAgent(data)
+            .then(response => getDataAgents())
+            .catch(error => setErrorData([...error.message]))
+        }
+    else {
+        hookForElseAndClearData()
+    }
+
+}
+
+
+const editDataAgent = async (data) => {
+    if (localStorage.getItem("access")) {
+         await putAngent(data)
+            .then(response => getDataModules())
+            .catch(error => setErrorData([...error.message]))
+        }
+    else {
+        hookForElseAndClearData()
+    }
+
+}
+
+const getIdUser = async (data) => {
+    if (localStorage.getItem("access")) {
+         await getUserForId(data)
+            .then(response => setDataConsultedUserForId([response.data]))
+            .catch(error => setErrorData([...error.message]) & console.log(error))
+        }
+    else {
+        hookForElseAndClearData()
+    }
+
+}
+
+
+const deleteDataUser = async (data) => {
+    if (localStorage.getItem("access")) {
+         await delUser(data)
+            .then(response => getDataUsers())
+            .catch(error => setErrorData([...error.message]))
+        }
+    else {
+        hookForElseAndClearData()
+    }
+
+}
+
+const editDataUser = async (data) => {
+    if (localStorage.getItem("access")) {
+         await putUser(data)
+            .then(response => getDataUsers())
+            .catch(error => setErrorData([...error.message]))
+        }
+    else {
+        hookForElseAndClearData()
+    }
+
+}
+
+
+
     return (
         <declareAndProvideContext.Provider value={
-            {getDataUsers,postDataAgent, deleteDataModule, dataConsultedAgents,dataConsultedModules, dataConsultedUsers, getDataModules, getDataAgents, getCredentials, errorData, payloadToken, signOut, postDataUsers,postDataModule}
+            {getDataUsers,postDataAgent, editDataAgent, editDataUser, deleteDataUser, dataConsultedUserForId, getIdUser,  deleteDataAgent, getIdAgent, deleteDataModule, dataConsultedAgentForId, editDataModule, getIdModule, dataConsultedModulForId, dataConsultedAgents,dataConsultedModules, dataConsultedUsers, getDataModules, getDataAgents, getCredentials, errorData, payloadToken, signOut, postDataUsers,postDataModule}
         }>
             {children}
         </declareAndProvideContext.Provider>

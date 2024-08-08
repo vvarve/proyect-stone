@@ -28,8 +28,8 @@ const { payloadToken, signOut} = useAndCompileContext()
 
                 <ol>
                     <li>_____</li>
-                    <a href="/signin"><li>Sign in</li></a>
-                    <a onClick={()=> signOut()}><li>Sign out</li></a>
+                    {(!payloadToken | !localStorage.getItem("access") | !localStorage.getItem("refresh")) && <a href="/signin"><li>Sign in</li></a>}
+                    {(payloadToken && localStorage.getItem("access") && localStorage.getItem("refresh")) && <a onClick={()=> signOut()}><li>Sign out</li></a>}
                 </ol>
             </nav>
         </header>

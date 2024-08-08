@@ -4,12 +4,19 @@ import {useForm} from "react-hook-form"
 
 
 export const Agent = () => {
-const {getDataAgents,getDataUsers, postDataAgent, getDataModules, dataConsultedAgents,dataConsultedUsers, dataConsultedModules, payloadToken, errorData} = useAndCompileContext()
+const {getDataAgents,getDataUsers, postDataAgent, editDataAgent, deleteDataAgent, getIdAgent, dataConsultedAgentForId, getDataModules, dataConsultedAgents,dataConsultedUsers, dataConsultedModules, payloadToken, errorData} = useAndCompileContext()
 const [modal, setModal] = useState(false)
+const [rowId, setRowId] = useState(0)
+const [edit, setEdit] = useState(false)
+const [del, setDel] = useState(false)
 const {handleSubmit, register, formState: {errors}} = useForm()
 
+const handlePutAgent = handleSubmit((data) => {
+    editDataAgent(data)
+})
+
 const handleCreateAgent = handleSubmit((data) => {
-    postDataAgent(data)
+    postDataAgent(data) 
 })
 
 useEffect(()=> {
@@ -22,8 +29,44 @@ useEffect(()=> {
         <section>
             <h1>TABLE AGENTS</h1>
 
+            {del && payloadToken.superuser | (payloadToken.staff  && payloadToken.conditions.delete) && <div className="modal-delete">
+                <h4>Do you want delete this row?</h4>
+                <button onClick={() => setDel(!del) & deleteDataAgent(rowId)} type="button" className="btn-delete-modal">Accept</button>
+                <button onClick={() => setDel(!del)} type="button"className="btn-cancel-modal">Cancel</button>
+            </div>}
 
-            <div className={modal ? "modal-create" : "modal-create-nodisplay"}>
+
+            {edit && payloadToken.superuser | (payloadToken.staff && payloadToken.conditions.put) && <div className="modal-editingi">
+                <button onClick={() => setEdit(!edit) & getDataModules() & getDataUsers()} type="button" className="btn-x-editingi">X</button>
+                <h3>EDITING AGENT</h3>
+                
+                <form id="form-edit" onSubmit={(e) => handlePutAgent(e)} className="form-modal-editingi">
+                        <label htmlFor="agent" className="label-modal-editingi">agent</label>
+                        <select name="agent" id="" {...register("agent", {required: true})}>
+                            {dataConsultedAgentForId && dataConsultedAgentForId.map((data) => {return <option key={data.id} value={data.id}>{data.agent}</option>})}
+                            {dataConsultedUsers && dataConsultedUsers.map((data, index) => { return <option key={index} value={data.id}>{data.username}</option>})}
+                        </select>
+                        <label htmlFor="module" className="label-modal-editingi">group or module</label>
+                        <select name="module" id="" {...register("group", {required: true})}>
+                            {dataConsultedAgentForId && dataConsultedAgentForId.map((data) => {return <option key={data.id}  value={data.id}>{data.group}</option>})}
+                            {dataConsultedModules && dataConsultedModules.map((data, index) => { return <option key={index} value={data.id}>{data.module}</option>})}
+                        </select>
+                            {dataConsultedAgentForId && dataConsultedAgentForId.map((data) => {
+                                return <>
+                                        <label htmlFor="DNI" className="label-modal-editingi" >DNI</label> 
+                                        <input type="text" name="DNI" placeholder={data.dni} {...register("dni")}/>
+                                        <label htmlFor="Address" className="label-modal-editingi">Address</label> 
+                                        <input type="Address" name="Address" placeholder={data.address} {...register("address")} />
+                                        <input type="number" name="_id" defaultValue={data.id} disabled={true} {...register("_id")}/>
+                                    </>
+                            })}
+                            <button htmlFor="form-edit" className="btn-modal-editingi" type="submit">EDIT agent</button>
+                            {errorData && <p>{errorData}</p>}
+                </form>
+            </div> }
+
+
+            { modal && payloadToken.superuser | (payloadToken.staff && payloadToken.conditions.post) && <div className="modal-create">
                 <button onClick={() => setModal(!modal) & getDataModules() & getDataUsers()} type="button" className="btn-x-create">X</button>
                 <h3>CREATE AGENT</h3>
                 
@@ -50,11 +93,11 @@ useEffect(()=> {
                     <button className="btn-modal-create" type="submit">create agent</button>
                     {errorData && <p>{errorData}</p>}
                 </form>
-            </div>  
+            </div>  }
 
             <div className="div-CV">
                 <button onClick={() => getDataAgents()} type="button" className="btn-get">RELOAD TABLE</button>
-                <button  onClick={() => setModal(!modal) & getDataModules() & getDataUsers()} type="button" className="btn-create">CREATE AGENT</button>
+                {payloadToken.superuser | payloadToken.staff && <button  onClick={() => setModal(!modal) & getDataModules() & getDataUsers()} type="button" className="btn-create">CREATE AGENT</button>}
             </div>
 
             <table>
@@ -67,7 +110,7 @@ useEffect(()=> {
                         <th>DNI</th>
                         <th>Address</th>
                         <th>Inactive</th>
-                        <th>Secret Key</th>
+                        {payloadToken.superuser && <th>Secret Key</th>}
                         <th>Editing</th>
                     </tr>
                 </thead>
@@ -82,10 +125,10 @@ useEffect(()=> {
                                 <td>{data.dni}</td>
                                 <td>{data.address}</td>
                                 <td>{data.inactive ? "True": "False"}</td>
-                                <td>{data.secretKey}</td>
-                                <td className={(payloadToken.staff || payloadToken.superuser) ? "td-none"  : "class-btns-nodisplay"}>
-                                <button className={!payloadToken.superuser ? "class-btns-nodisplay" : "btn-del"}>DEL</button>
-                                <button className="btn-edit">EDIT</button>
+                                {payloadToken.superuser && <td>{data.secretKey}</td>}
+                                <td className="td-none">
+                                {payloadToken.superuser | (payloadToken.staff && payloadToken.conditions.delete) && <button onClick={(e) => setDel(!del) & setRowId(e.target.id)} id={data.id} className={"btn-del"}>DEL</button>}
+                                {payloadToken.staff | payloadToken.superuser && <button onClick={(e) => getIdAgent(e.target.id) & setEdit(!edit)} id={data.id} className="btn-edit">EDIT</button>}
                                 </td>
                             </tr>
                 })

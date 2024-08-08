@@ -19,7 +19,7 @@ class AgentModel(models.Model):
     agent = models.ForeignKey(User, unique=True, related_name="recursiveAgentModel", on_delete=models.CASCADE)
     group = models.ForeignKey(ModuleModel, null=True, related_name="recursiveGroupModel",  on_delete=models.CASCADE)
     current_ip = models.CharField(max_length=15, default="0.0.0.0", null=True)
-    last_connection = models.DateField(auto_now_add=datetime.datetime.now())
+    last_connection = models.DateTimeField(auto_now_add=datetime.datetime.now())
     dni = models.CharField(max_length=16, unique=True, blank=True, null=True)
     address = models.CharField(max_length=50, blank=True, null=True, default="NoneAddress")
     inactive = models.BooleanField(default=False)
@@ -28,4 +28,5 @@ class AgentModel(models.Model):
 
 class CodeFree(models.Model):
     agentnumber = models.ForeignKey(AgentModel, related_name="agentCode", on_delete=models.CASCADE, default="NoneAgent") #here not on delete Cascade
-    code = models.CharField(max_length=50, unique=True) 
+    code = models.CharField(max_length=50, unique=True)
+    date =  models.DateTimeField(auto_now_add=datetime.datetime.now())

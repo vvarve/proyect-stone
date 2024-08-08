@@ -9,6 +9,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer): #Change the inform
         token = super().get_token(user)
 
         group = str(AgentModel.objects.filter(agent = user.id).first().group)
+        allow = ModuleModel.objects.filter(module = group).first()
         # Add custom claims
         token['username'] = user.username
         token["email"] = user.email
@@ -16,6 +17,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer): #Change the inform
         token["staff"] = user.is_staff
         token["active"] = user.is_active
         token["superuser"] = user.is_superuser
+        token["conditions"] = {"get" : allow.get, "put": allow.put, "post": allow.post, "delete": allow.delete}
         # ...
 
         return token
@@ -55,7 +57,7 @@ class PrincipalAgentSerializer(serializers.ModelSerializer):
             "inactive": instance.inactive,
             "secretKey": instance.secretKey,
             "agent": instance.agent.username,
-            "group": instance.group.module
+            "group": None if not instance.group else instance.group.module
         }
 
 
