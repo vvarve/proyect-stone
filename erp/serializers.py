@@ -2,23 +2,28 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from erp.models import AgentModel, ModuleModel, CodeFree
 from django.contrib.auth.models import User
+import requests
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer): #Change the information Json WEB Token
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        print()
-        group = str(AgentModel.objects.filter(agent = user.id).first().group)
-        allow = ModuleModel.objects.filter(module = group).first()
-        # Add custom claims
+        agent_change_ip = AgentModel.objects.filter(agent = user.id).first()
+        private_ip = requests.get('https://api.ipify.org?format=json').json()["ip"]
+        if private_ip:
+             agent_change_ip.current_ip = private_ip
+             agent_change_ip.save()
+        
+        group = ModuleModel.objects.filter(module = str(agent_change_ip.group)).first()
+    
         token['username'] = user.username
         token["email"] = user.email
-        token["group"] = group
+        token["group"] = group.module
         token["staff"] = user.is_staff
         token["active"] = user.is_active
         token["superuser"] = user.is_superuser
-        token["conditions"] = {"get" : allow.get, "put": allow.put, "post": allow.post, "delete": allow.delete}
-        # ...
+        token["conditions"] = {"get" : group.get, "put": group.put, "post": group.post, "delete": group.delete}
+        token["privateIP"] = None if not private_ip else private_ip
 
         return token
 
