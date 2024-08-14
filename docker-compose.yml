@@ -1,0 +1,15 @@
+name: erp
+
+services:
+  erp:
+    container_name: db_proyect_stone_postgresql
+    image: postgres:16.4
+    restart: always 
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    ports:
+      - 5433:5432 
+    environment:
+      - POSTGRES_USER=erp_postgres
+      - POSTGRES_PASSWORD=1234sql
+      - POSTGRES_DB=probes
