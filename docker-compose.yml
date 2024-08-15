@@ -1,15 +1,29 @@
-name: erp
-
 services:
-  erp:
+  erp_db:
     container_name: db_proyect_stone_postgresql
     image: postgres:16.4
-    restart: always 
+    restart: always
     volumes:
       - ./postgres:/var/lib/postgresql/data
     ports:
-      - 5433:5432 
+      - 5432:5432 
     environment:
       - POSTGRES_USER=erp_postgres
       - POSTGRES_PASSWORD=1234sql
       - POSTGRES_DB=probes
+    
+  erp_app:
+    container_name: app_proyect_stone
+    build: .
+    volumes:
+      - .:/usr/src/erp/
+    ports:
+      - 8000:8000 
+    environment:
+      - POSTGRES_USER=erp_postgres
+      - POSTGRES_PASSWORD=1234sql
+      - POSTGRES_DB=probes
+      - SECRET_KEY=${SECRET_KEY}
+    depends_on:
+      - erp_db
+    command: python manage.py runserver 0.0.0.0:8000

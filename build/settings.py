@@ -15,10 +15,6 @@ from .config.auth import HABILITY_AUTHENTICATION
 from .config.simpleJWT import CONFIG_SIMPLE_JWT
 from .config.extendApps import NEW_APPS
 from pathlib import Path
-from dotenv import load_dotenv
-
-
-load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -87,8 +83,8 @@ DATABASES = {
         'NAME': 'probes',
         'USER': 'erp_postgres',
         'PASSWORD': '1234sql',
-        'HOST': 'localhost',
-        'PORT': '5433',
+        "HOST": "erp_db",
+        'PORT': 5432,
     }
 }
 
