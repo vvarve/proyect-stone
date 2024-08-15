@@ -81,9 +81,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql', # -> connecting db postgresql
         'NAME': 'probes',
-        'USER': 'erp_postgres',
+        'USER': 'erppostgres',
         'PASSWORD': '1234sql',
-        "HOST": "erp_db",
+        'HOST': 'erp_db',
         'PORT': 5432,
     }
 }

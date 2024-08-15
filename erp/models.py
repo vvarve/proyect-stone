@@ -12,6 +12,10 @@ class ModuleModel(models.Model):
     delete = models.BooleanField(default=False)
     register = models.DateField(auto_now_add=datetime.datetime.now())
 
+    class Meta:
+        managed = True
+        db_table = 'erp_Modules'
+
     def __str__(self):
         return self.module
 
@@ -20,13 +24,21 @@ class AgentModel(models.Model):
     group = models.ForeignKey(ModuleModel, null=True, related_name="recursiveGroupModel",  on_delete=models.CASCADE)
     current_ip = models.CharField(max_length=15, default="0.0.0.0", null=True)
     last_connection = models.DateTimeField(auto_now_add=datetime.datetime.now())
-    dni = models.CharField(max_length=16, unique=True, blank=True, null=True)
+    dni = models.CharField(max_length=16, blank=True, null=True)
     address = models.CharField(max_length=50, blank=True, null=True, default="NoneAddress")
     inactive = models.BooleanField(default=False)
     secretKey = models.CharField(default=random.random().hex() + str(random.randint(1, 9999)), max_length=50, unique=True, null=False, blank=False)
+    
+    class Meta:
+        managed = True
+        db_table = 'erp_Agents'
 
 
 class CodeFree(models.Model):
     agentnumber = models.ForeignKey(AgentModel, related_name="agentCode", on_delete=models.CASCADE, default="NoneAgent") #here not on delete Cascade
     code = models.CharField(max_length=50, unique=True)
     date =  models.DateTimeField(auto_now_add=datetime.datetime.now())
+
+    class Meta:
+        managed = True
+        db_table = 'erp_Codefree'

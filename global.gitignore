@@ -1,3 +1,6 @@
 virtual/
 .env
 postgres/
+migrations/
+__pycache__/
+migrations/*

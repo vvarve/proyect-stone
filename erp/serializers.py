@@ -8,12 +8,20 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer): #Change the inform
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
+
         agent_change_ip = AgentModel.objects.filter(agent = user.id).first()
         private_ip = requests.get('https://api.ipify.org?format=json').json()["ip"]
-        if private_ip:
-             agent_change_ip.current_ip = private_ip
-             agent_change_ip.save()
-        
+        if agent_change_ip and private_ip:
+            agent_change_ip.current_ip = private_ip
+            agent_change_ip.save()
+        elif user.is_superuser and private_ip:
+            group_create = ModuleModel.objects.update_or_create(module = "boss", get= True, put = True, delete = True, post = True)
+            agent_create = AgentModel.objects.create(agent_id = user.id, current_ip = private_ip, group = group_create[0])
+            agent_create.save()
+            agent_change_ip = AgentModel.objects.filter(agent = user.id).first()
+        else:
+            pass
+
         group = ModuleModel.objects.filter(module = str(agent_change_ip.group)).first()
     
         token['username'] = user.username
@@ -22,7 +30,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer): #Change the inform
         token["staff"] = user.is_staff
         token["active"] = user.is_active
         token["superuser"] = user.is_superuser
-        token["conditions"] = {"get" : group.get, "put": group.put, "post": group.post, "delete": group.delete}
+        token["conditions"] = {"get" : group.get, "put": group.put, "post": group.post, "delete": group.delete} | {"get" : False, "put": False, "post": False, "delete": False}
         token["privateIP"] = None if not private_ip else private_ip
 
         return token
