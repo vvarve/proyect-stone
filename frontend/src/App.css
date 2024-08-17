@@ -303,3 +303,11 @@ select {
   box-shadow: 0 2px 1px 0 rgba(255, 255, 255, 0.2), 0 0px 0px 1px rgba(48, 48, 48, 0.19);
   background-color: #fcfcfc;
 }
+
+
+.errorip {
+  background-color: var(---btn--select-red);
+  color: white;
+  padding: 5px;
+  position: fixed;
+}

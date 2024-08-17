@@ -9,7 +9,7 @@ const [modal, setModal] = useState(false)
 const [rowId, setRowId] = useState(0)
 const [edit, setEdit] = useState(false)
 const [del, setDel] = useState(false)
-const {handleSubmit, register, formState: {errors}} = useForm()
+const {handleSubmit, register} = useForm()
 
 const handlePutAgent = handleSubmit((data) => {
     editDataAgent(data)
@@ -27,6 +27,8 @@ useEffect(()=> {
 
     return(
         <section>
+            {errorData.errorchangeip && <div className="errorip"><p>You internet protocol has changed!</p></div>}
+
             <h1>TABLE AGENTS</h1>
 
             {del && payloadToken.superuser | (payloadToken.staff  && payloadToken.conditions.delete) && <div className="modal-delete">
@@ -61,7 +63,7 @@ useEffect(()=> {
                                     </>
                             })}
                             <button htmlFor="form-edit" className="btn-modal-editingi" type="submit">EDIT agent</button>
-                            {errorData && <p>{errorData}</p>}
+                            {errorData && <p className="error-message">{errorData.message}</p>}
                 </form>
             </div> }
 
@@ -91,7 +93,7 @@ useEffect(()=> {
                     <input type="Address" name="Address" {...register("address")} />
                     
                     <button className="btn-modal-create" type="submit">create agent</button>
-                    {errorData && <p>{errorData}</p>}
+                    {errorData && <p className="error-message" >{errorData.message}</p>}
                 </form>
             </div>  }
 

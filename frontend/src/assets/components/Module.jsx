@@ -9,7 +9,7 @@ const [modal, setModal] = useState(false)
 const [rowId, setRowId] = useState(0)
 const [edit, setEdit] = useState(false)
 const [del, setDel] = useState(false)
-const {handleSubmit, register, formState: {errors}} = useForm()
+const {handleSubmit, register} = useForm()
 
 const handlePutModule = handleSubmit((data) => {
    editDataModule(data)
@@ -28,6 +28,7 @@ useEffect(()=> {
     
     return (
             <section>
+                {errorData.errorchangeip && <div className="errorip"><p>You internet protocol has changed!</p></div>}
 
                 {del && payloadToken.superuser | (payloadToken.staff  && payloadToken.conditions.delete) && <div className="modal-delete">
                     <h4>Do you want delete this row?</h4>
@@ -57,7 +58,7 @@ useEffect(()=> {
                                         </div>
                                         <input type="number" name="id" value={data.id} disabled={true} {...register("id")}/>
                                         <button className="btn-modal-editingi" type="submit">editing module</button>
-                                        {errorData && <p>{errorData}</p>}
+                                        {errorData && <p className="error-message">{errorData.message}</p>}
                                     
                                         </>
                                 })}
@@ -85,7 +86,7 @@ useEffect(()=> {
                         </form>
 
 
-                        {errorData && <p>{errorData}</p>}
+                        {errorData && <p className="error-message">{errorData.message}</p>}
 
 
                 </div>}

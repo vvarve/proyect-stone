@@ -30,7 +30,7 @@ nav ul {
 .a-logo {
     background-position: center;
     background-size: contain;
-    background-image: url("../../../../public/genetic.svg");
+    background-image: url("/genetic.svg");
     background-repeat: none;
     margin: center;
     height: 120px;

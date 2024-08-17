@@ -28,119 +28,102 @@ load_dotenv()
 RES = response.Response
 
 def getInformation(func_ext):
-   
     def func_intern(self, request):
-        private_ip = requests.get('https://api.ipify.org?format=json').json()["ip"]
-        if request.META.get('HTTP_AUTHORIZATION').split(" ")[0] == "Bearer" and request.META.get('HTTP_AUTHORIZATION').split(" ")[1]:
             payload = jwt.decode(request.META.get('HTTP_AUTHORIZATION').split(" ")[1], key= os.getenv('SECRET_KEY'), algorithms=["HS256"])
             if payload["conditions"]["get"] or payload["staff"] or payload["superuser"] or payload["active"]:
                 agentip = AgentModel.objects.filter(id = payload["user_id"]).first()
-                if agentip.current_ip == private_ip:
+                if agentip.current_ip == requests.get('https://api.ipify.org?format=json').json()["ip"]:
                     return_function = func_ext(self, request)
                     if return_function:
                         return RES(return_function, status= status.HTTP_200_OK)
                     return RES({"message": "Bad data request"}, status= status.HTTP_400_BAD_REQUEST)
-                return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
+                return RES({"message": "unauthorized", "errorchangeip": "changed"}, status= status.HTTP_401_UNAUTHORIZED)
             return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
-        return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
+        
     return func_intern
 
 
 def postInformation(func_ext):
     def func_intern(self, request):
-        private_ip = requests.get('https://api.ipify.org?format=json').json()["ip"]
-        if request.META.get('HTTP_AUTHORIZATION').split(" ")[0] == "Bearer" and request.META.get('HTTP_AUTHORIZATION').split(" ")[1]:
                 payload = jwt.decode(request.META.get('HTTP_AUTHORIZATION').split(" ")[1], key= os.getenv('SECRET_KEY'), algorithms=["HS256"])
                 if payload["active"]:
                     agentip = AgentModel.objects.filter(id = payload["user_id"]).first()
-                    if agentip.current_ip == private_ip:
+                    if agentip.current_ip == requests.get('https://api.ipify.org?format=json').json()["ip"]:
                         if payload["conditions"]["post"] and payload["staff"] or payload["superuser"]:
                             return_function = func_ext(self, request)
                             if return_function["success"]:
                                 return RES(return_function, status= status.HTTP_200_OK)
                             return RES(return_function, status= status.HTTP_400_BAD_REQUEST)
                         return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
-                    return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
+                    return RES({"message": "unauthorized", "errorchangeip": "changed"}, status= status.HTTP_401_UNAUTHORIZED)
                 return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
-        return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
+        
     return func_intern
 
 
 def putInformation(func_ext):
     def func_intern(self, request, pk):
-        private_ip = requests.get('https://api.ipify.org?format=json').json()["ip"]
-        if request.META.get('HTTP_AUTHORIZATION').split(" ")[0] == "Bearer" and request.META.get('HTTP_AUTHORIZATION').split(" ")[1]:
             payload = jwt.decode(request.META.get('HTTP_AUTHORIZATION').split(" ")[1], key= os.getenv('SECRET_KEY'), algorithms=["HS256"])
             if payload["active"]:
                 agentip = AgentModel.objects.filter(id = payload["user_id"]).first()
-                if agentip.current_ip == private_ip:
+                if agentip.current_ip == requests.get('https://api.ipify.org?format=json').json()["ip"]:
                     if payload["conditions"]["put"] and payload["staff"] or payload["superuser"]:
                         return_function = func_ext(self, request, pk)
                         if return_function["success"]:
                             return RES(return_function, status= status.HTTP_200_OK)
                         return RES(return_function, status= status.HTTP_400_BAD_REQUEST)
                     return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
-                return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
+                return RES({"message": "unauthorized", "errorchangeip": "changed"}, status= status.HTTP_401_UNAUTHORIZED)
             return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
-        return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
     return func_intern
 
 def deleteInformationClass(func_ext):
     def func_intern(self,  request, pk):
-        private_ip = requests.get('https://api.ipify.org?format=json').json()["ip"]
-        if request.META.get('HTTP_AUTHORIZATION').split(" ")[0] == "Bearer" and request.META.get('HTTP_AUTHORIZATION').split(" ")[1]:
             payload = jwt.decode(request.META.get('HTTP_AUTHORIZATION').split(" ")[1], key= os.getenv('SECRET_KEY'), algorithms=["HS256"])
             if payload["active"]:
                 agentip = AgentModel.objects.filter(id = payload["user_id"]).first()
-                if agentip.current_ip == private_ip:
+                if agentip.current_ip == requests.get('https://api.ipify.org?format=json').json()["ip"]:
                     if payload["conditions"]["delete"] and payload["staff"] or payload["superuser"]:
                         return_function = func_ext(self, request, pk)   
                         if return_function["success"]:
                             return RES(return_function, status= status.HTTP_200_OK)
                         return RES(return_function, status= status.HTTP_400_BAD_REQUEST)
                     return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
-                return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
+                return RES({"message": "unauthorized", "errorchangeip": "changed"}, status= status.HTTP_401_UNAUTHORIZED)
             return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
-        return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
     return func_intern
 
 def deleteInformationFunction(func_ext):
     def func_intern(request, pk):
-        private_ip = requests.get('https://api.ipify.org?format=json').json()["ip"]
-        if request.META.get('HTTP_AUTHORIZATION').split(" ")[0] == "Bearer" and request.META.get('HTTP_AUTHORIZATION').split(" ")[1]:
             payload = jwt.decode(request.META.get('HTTP_AUTHORIZATION').split(" ")[1], key= os.getenv('SECRET_KEY'), algorithms=["HS256"])
             if payload["active"]:
                 agentip = AgentModel.objects.filter(id = payload["user_id"]).first() 
-                if agentip.current_ip == private_ip:             
+                if agentip.current_ip == requests.get('https://api.ipify.org?format=json').json()["ip"]:             
                     if payload["conditions"]["delete"] and payload["staff"] or payload["superuser"]:
                         return_function = func_ext(request, pk)   
                         if return_function["success"]:
                             return RES(return_function, status= status.HTTP_200_OK)
                         return RES(return_function, status= status.HTTP_400_BAD_REQUEST)
                     return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
-                return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
+                return RES({"message": "unauthorized", "errorchangeip": "changed"}, status= status.HTTP_401_UNAUTHORIZED)
             return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
-        return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
     return func_intern
 
 
 def getInformationId(func_ext):
     def func_intern(self, request, pk):
-        private_ip = requests.get('https://api.ipify.org?format=json').json()["ip"]
-        if request.META.get('HTTP_AUTHORIZATION').split(" ")[0] == "Bearer" and request.META.get('HTTP_AUTHORIZATION').split(" ")[1]:
             payload = jwt.decode(request.META.get('HTTP_AUTHORIZATION').split(" ")[1], key= os.getenv('SECRET_KEY'), algorithms=["HS256"])
             if payload["active"]:
                 agentip = AgentModel.objects.filter(id = payload["user_id"]).first()
-                if agentip.current_ip == private_ip:
+                if agentip.current_ip == requests.get('https://api.ipify.org?format=json').json()["ip"]:
                     if payload["conditions"]["delete"] or payload["staff"] or payload["superuser"] or payload["active"]:
                         return_function = func_ext(self, request, pk)
                         if return_function:
                             return RES(return_function, status= status.HTTP_200_OK)
                         return RES(return_function, status= status.HTTP_400_BAD_REQUEST)
                     return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
-                return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
+                return RES({"message": "unauthorized", "errorchangeip": "changed"}, status= status.HTTP_401_UNAUTHORIZED)
             return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
-        return RES({"message": "unauthorized"}, status= status.HTTP_401_UNAUTHORIZED)
     return func_intern
 
 
