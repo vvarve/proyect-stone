@@ -1,3 +1,4 @@
+# docker-compose
 services:
   erp_db:
     container_name: db_proyect_stone_postgresql
